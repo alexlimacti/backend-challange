@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -24,6 +25,7 @@ import com.invillia.acme.domain.enumerator.OrderStatus;
 import com.invillia.acme.domain.enumerator.PaymentStatus;
 
 @Entity
+@Table(name="orders")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;

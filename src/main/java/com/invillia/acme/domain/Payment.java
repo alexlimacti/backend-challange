@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.invillia.acme.domain.enumerator.PaymentStatus;
 
 @Entity
+@Table(name="payment")
 public class Payment implements Serializable {
 
 	private static final long serialVersionUID = 1L;

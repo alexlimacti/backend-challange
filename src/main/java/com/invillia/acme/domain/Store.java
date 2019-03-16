@@ -10,10 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name="store")
 public class Store implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class Store implements Serializable {
 	private Address address;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy="store")
 	private List<Order> orders = new ArrayList<>();
 	
 	public Store() {

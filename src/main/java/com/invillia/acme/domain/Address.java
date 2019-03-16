@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="address")
 public class Address implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,15 +22,17 @@ public class Address implements Serializable {
 	private String state;
 	private String district;
 	private String country;
+	private String city;
 	private String number;
 
 	public Address() {
 
 	}
 
-	public Address(String street, String state, String district, String country, String number) {
+	public Address(String street, String state, String city, String district, String country, String number) {
 		super();
 		this.street = street;
+		this.city = city;
 		this.state = state;
 		this.district = district;
 		this.country = country;
@@ -85,6 +89,14 @@ public class Address implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	@Override

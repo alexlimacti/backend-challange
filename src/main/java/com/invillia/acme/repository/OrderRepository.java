@@ -15,7 +15,7 @@ import com.invillia.acme.domain.Store;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	
-	@Query("FROM Order o WHERE o.Store = :store"
+	@Query("FROM Order o WHERE o.store = :store"
 			+ " AND o.confirmationDate = :confirmationDate"
 			+ " AND o.status = :status")
 	public List<Order> findByStoreAndConfirmationDateAndStatus(@Param("store")Store store, @Param("confirmationDate")Date confirmationDate, @Param("status") Integer status);
