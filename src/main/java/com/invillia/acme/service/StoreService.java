@@ -1,5 +1,6 @@
 package com.invillia.acme.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.invillia.acme.domain.Address;
 import com.invillia.acme.domain.Store;
 import com.invillia.acme.dto.StoreDTO;
+import com.invillia.acme.dto.StoreNewDTO;
 import com.invillia.acme.repository.AddressRepository;
 import com.invillia.acme.repository.StoreRepository;
 import com.invillia.acme.service.exceptions.DataIntegrityException;
@@ -56,8 +59,13 @@ public class StoreService {
 		}
 	}
 	
-	public Store fromDTO(StoreDTO objDto) {
+	public Store fromDTO(StoreDTO objDto) {		
 		return new Store(objDto.getName(), null);
+	}
+	
+	public Store fromNewDTO(StoreNewDTO objDto) {
+		Address a = new Address(objDto.getStreet(),objDto.getState(),objDto.getCity(),objDto.getDistrict(),objDto.getCountry(),objDto.getNumber());
+		return new Store(objDto.getName(), a);
 	}
 	
 	public Page<Store> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
@@ -67,6 +75,10 @@ public class StoreService {
 	
 	private void updateData(Store newObj, Store obj) {
 		newObj.setName(obj.getName());
+	}
+	
+	public List<Store> findAll() {
+		return storeRepository.findAll();
 	}
 	
 

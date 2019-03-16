@@ -16,7 +16,7 @@ import com.invillia.acme.dto.StoreDTO;
 import com.invillia.acme.repository.StoreRepository;
 import com.invillia.acme.resource.exceptions.FieldMessage;
 
-public class StoreUpdateValidator implements ConstraintValidator<StoreInsert, StoreDTO> {
+public class StoreUpdateValidator implements ConstraintValidator<StoreUpdate, StoreDTO> {
 
 	@Autowired
 	private HttpServletRequest request;

@@ -3,8 +3,10 @@ package com.invillia.acme.domain.enumerator;
 public enum OrderStatus {
 	awaiting_payment(1, "Awaiting payment"),
 	waiting(2, "Waiting to be sent"),
-	sent(3, "Sent"),
-	delivered(4, "Delivered"),
+	confirmed(3, "Confirmed"),
+	sent(4, "Sent"),
+	delivered(5, "Delivered"),
+	refunded(6,"Refunded"),
 	;
 	
 	private String name;

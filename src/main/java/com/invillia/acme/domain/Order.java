@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.invillia.acme.domain.enumerator.OrderStatus;
 import com.invillia.acme.domain.enumerator.PaymentStatus;
 
@@ -31,10 +33,11 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 
-	@OneToOne
+	@JsonDeserialize
+	@ManyToOne
 	private Address address;
 
 	@Temporal(TemporalType.DATE)
@@ -42,13 +45,12 @@ public class Order implements Serializable {
 
 	private Integer status;
 
-	@ManyToOne
-	@JoinColumn(name = "store_id")
-	private Store store;
-
-	@OneToMany(mappedBy = "id.order")
+	@JsonSerialize
+	@OneToMany(cascade = {CascadeType.ALL})
+	@JoinColumn(name = "order_id")
 	private Set<OrderItem> items = new HashSet<>();
 
+	@JsonDeserialize
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
 	private Payment payment;
 
@@ -115,14 +117,6 @@ public class Order implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Store getStore() {
-		return store;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
-
 	public Payment getPayment() {
 		return payment;
 	}
@@ -132,15 +126,13 @@ public class Order implements Serializable {
 	}
 
 	public String toString() {
-		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		StringBuilder builder = new StringBuilder();
 		builder.append("Order number: ");
 		builder.append(getId());
 		builder.append(", Confirmation Date: ");
 		builder.append(sdf.format(getConfirmationDate()));
-		builder.append(", Store: ");
-		builder.append(getStore().getName());
 		builder.append(", Order Status: ");
 		builder.append(getStatus().getName());
 		builder.append(", Payment Status: ");

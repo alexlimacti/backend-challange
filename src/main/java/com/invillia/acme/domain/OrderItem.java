@@ -4,63 +4,96 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="orders_item")
-public class OrderItem  implements Serializable {
+@Table(name="order_item")
+public class OrderItem implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@JsonIgnore
-	@EmbeddedId
-	private OrderItemPK id = new OrderItemPK();
+	@ManyToOne
+	@JoinColumn(name="order_id")
+	private Order order;
 	
+	private String description;
 	private Double unitPrice;
 	private Integer quantity;
 
 	public OrderItem() {
 		
 	}
-
-	public OrderItem(Order order, String description, Double unitPrice, Integer quantity) {
+	
+	
+	public OrderItem(String description, Double unitPrice, Integer quantity) {
 		super();
-		id.setOrder(order);
-		id.setDescription(description);
+		this.description = description;
 		this.unitPrice = unitPrice;
 		this.quantity = quantity;
 	}
-	
+
+
 	public double getSubTotal() {
 		return unitPrice * quantity;
 	}
-
-	@JsonIgnore
-	public OrderItemPK getId() {
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(OrderItemPK id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
+
 
 	public Double getUnitPrice() {
 		return unitPrice;
 	}
 
+
 	public void setUnitPrice(Double unitPrice) {
 		this.unitPrice = unitPrice;
 	}
+
 
 	public Integer getQuantity() {
 		return quantity;
 	}
 
+
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public static long getSerialversionuid() {
@@ -74,6 +107,7 @@ public class OrderItem  implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -91,19 +125,20 @@ public class OrderItem  implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+
 	public String toString() {
-		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		StringBuilder builder = new StringBuilder();
-		builder.append(getId().getDescription());
-		builder.append(", Qte: ");
+		builder.append(getDescription());
+		builder.append(", Quantity: ");
 		builder.append(getQuantity());
-		builder.append(", Preço unitário: ");
+		builder.append(", Unit Price: ");
 		builder.append(nf.format(getUnitPrice()));
 		builder.append(", Subtotal: ");
 		builder.append(nf.format(getSubTotal()));
 		builder.append("\n");
 		return builder.toString();
 	}
-	
+
 }
