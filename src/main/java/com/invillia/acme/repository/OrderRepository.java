@@ -25,5 +25,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 	
 	@Transactional(readOnly=true)
 	public Page<Order> findByStore(Store store, Pageable pageRequest);
+	
+	@Transactional(readOnly=true)
+	public Page<Order> findAll(Pageable pageRequest);
 
 }

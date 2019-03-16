@@ -41,6 +41,7 @@ public class OrderItemPK implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((order == null) ? 0 : order.hashCode());
 		return result;
 	}
@@ -54,6 +55,11 @@ public class OrderItemPK implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		OrderItemPK other = (OrderItemPK) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
 		if (order == null) {
 			if (other.order != null)
 				return false;
@@ -61,5 +67,7 @@ public class OrderItemPK implements Serializable {
 			return false;
 		return true;
 	}
+
+	
 
 }
