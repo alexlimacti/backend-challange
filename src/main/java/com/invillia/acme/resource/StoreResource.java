@@ -23,33 +23,33 @@ import com.invillia.acme.service.StoreService;
 @RestController
 @RequestMapping("/store")
 public class StoreResource {
-	
+
 	@Autowired
 	private StoreService storeService;
-	
-	@RequestMapping(method=RequestMethod.GET)
+
+	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<StoreDTO>> findAll() {
 		List<Store> list = storeService.findAll();
 		List<StoreDTO> listDto = list.stream().map(obj -> new StoreDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-	
-	@RequestMapping(value="{id}", method=RequestMethod.GET)
+
+	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public ResponseEntity<Store> find(@PathVariable Long id) {
 		Store obj = storeService.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody StoreNewDTO objDTO){
+
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody StoreNewDTO objDTO) {
 		Store entity = storeService.fromNewDTO(objDTO);
 		entity = storeService.insert(entity);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(entity.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	@RequestMapping(value="{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody StoreDTO objDTO, @PathVariable Long id){
+
+	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody StoreDTO objDTO, @PathVariable Long id) {
 		Store obj = storeService.fromDTO(objDTO);
 		obj.setId(id);
 		obj = storeService.update(obj);
