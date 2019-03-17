@@ -4,6 +4,7 @@ public enum PaymentStatus {
 	
 	waiting(1, "Waiting Confirmation"),
 	confirmed(2, "Confirmed"),
+	refunded(3,"Refunded"),
 	;
 	
 	private String name;

@@ -62,8 +62,8 @@ public class InvilliaApplication implements CommandLineRunner {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Order o1 = new Order(a1, sdf.parse("16/03/2019"),OrderStatus.awaiting_payment);
-		Order o2 = new Order(a1, sdf.parse("10/03/2019"),OrderStatus.confirmed);
+		Order o1 = new Order(a1, sdf.parse("01/03/2019"),OrderStatus.confirmed);
+		Order o2 = new Order(a1, sdf.parse("07/03/2019"),OrderStatus.awaiting_payment);
 		
 		orderService.saveAll(Arrays.asList(o1,o2));
 		

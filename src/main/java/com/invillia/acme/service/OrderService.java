@@ -1,6 +1,5 @@
 package com.invillia.acme.service;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.invillia.acme.domain.Order;
-import com.invillia.acme.domain.OrderItem;
 import com.invillia.acme.domain.enumerator.OrderStatus;
 import com.invillia.acme.domain.enumerator.PaymentStatus;
 import com.invillia.acme.repository.AddressRepository;
@@ -45,10 +43,6 @@ public class OrderService {
 	}
 
 	public Order insert(Order entity) {
-		for(OrderItem oi:entity.getItems()) {
-			System.out.println("----------------------------------");
-			System.out.println(oi.getDescription());
-		}
 		addressRepository.save(entity.getAddress());
 		entity.setId(null);
 		entity.setConfirmationDate(new Date());
@@ -66,13 +60,14 @@ public class OrderService {
 		return entity;
 	}
 
-	public void refunded(Order entity) throws ParseException {
-		if(differenceBetweenDates(entity.getConfirmationDate(), new Date()) < 10 ||
+	public Order refunded(Order entity) {
+		if(differenceBetweenDates(entity.getConfirmationDate(), new Date()) >= 10 ||
 				!entity.getStatus().equals(OrderStatus.confirmed)) {
 			throw new IllegalArgumentException("Sorry! Can not reverse order!");
 		}
 		entity.setStatus(OrderStatus.refunded);
-		orderRepository.save(entity);
+		entity.getPayment().setPaymentStatus(PaymentStatus.refunded);
+		return orderRepository.save(entity);
 	}
 
 	public Page<Order> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
@@ -80,7 +75,7 @@ public class OrderService {
 		return orderRepository.findAll(pageRequest);
 	}
 
-	public Long differenceBetweenDates(Date beginDate, Date endDate) throws ParseException {
+	public Long differenceBetweenDates(Date beginDate, Date endDate) {
 
 		long diffInMillies = Math.abs(endDate.getTime() - beginDate.getTime());
 		long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
